@@ -1,0 +1,38 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+  <div class="inputs">
+    <label class="radiolabel"><input type="radio" name="pohlavie" value="A" checked />Chlapec</label>
+    <label class="radiolabel"><input type="radio" name="pohlavie" value="B"/>Dievča</label>
+    <input id="vek" name="vek" placeholder="Vek (v mesiacoch)"/>
+  </div>
+  <table cellpadding="3" cellspacing="0" border="1">
+    <thead>
+      <tr><td>Subtest</td><td>Skore</td><td>Percentil</td><td>Ocakavany vek</td><td>Oneskorenie za normou</td></tr>
+    </thead>
+    <tbody>
+      <tr id="6"><td class="subtest"></td><td><input class="skore" placeholder="Skore"/></td><td class="percentil">?</td><td class="vek2">?</td><td class="oneskorenie">?</td></tr>
+    </tbody>
+  </table>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
