@@ -74,7 +74,7 @@ function calculate_percentil(dataset, vek, skore) {
       return percentil
     }
   }
-  return '?'
+  return 99
 }
 
 function ocakavany_vek_od(dataset, skore) {
@@ -107,7 +107,7 @@ function evaluate(subtest, pohlavie, vek, skore) {
   vek2 = ocakavany_vek_do(dataset, skore)
   vek2_od = ocakavany_vek_od(dataset, skore)
   $("#" + subtest + " .vek2").text(vek2 == vek2_od ? vek2 : (vek2_od + ' - ' + vek2))
-  const oneskorenie = vek - vek2
+  const oneskorenie = Math.max(0, vek - vek2)
   $("#" + subtest + " .oneskorenie").css('color', (oneskorenie > 5) ? 'red' : 'black')
   $("#" + subtest + " .oneskorenie").text(oneskorenie)
 
