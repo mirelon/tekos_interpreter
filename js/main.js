@@ -68,6 +68,8 @@ for (const key in raw) {
   }
 }
 
+console.info(data)
+
 function calculate_percentil(dataset, vek, skore) {
   for (const percentil in dataset[vek]) {
     if (skore <= dataset[vek][percentil]) {
@@ -100,26 +102,41 @@ function ocakavany_vek_do(dataset, skore) {
 }
 
 function evaluate(subtest, pohlavie, vek, skore) {
+  const datasetKey = subtest + (["6", "7"].includes(subtest) ? pohlavie : '')
   const dataset = data[subtest + (["6", "7"].includes(subtest) ? pohlavie : '')]
+  if (dataset == null) throw new Error(`Invalid datasetKey ${datasetKey}`)
   const percentil = calculate_percentil(dataset, vek, skore)
-  $("#" + subtest + " .percentil").css('color', (percentil < 25) ? 'red' : 'black')
-  $("#" + subtest + " .percentil").text(percentil)
+  const percentilElement = document.querySelector(`#subtestRow${subtest} .percentil`)
+  percentilElement.style.color = (percentil < 25) ? 'red' : 'black'
+  percentilElement.textContent = percentil
   vek2 = ocakavany_vek_do(dataset, skore)
   vek2_od = ocakavany_vek_od(dataset, skore)
-  $("#" + subtest + " .vek2").text(vek2 == vek2_od ? vek2 : (vek2_od + ' - ' + vek2))
+  const vek2Element = document.querySelector(`#subtestRow${subtest} .vek2`)
+  vek2Element.textContent = (vek2 === vek2_od) ? vek2 : (vek2_od + ' - ' + vek2)
   const oneskorenie = Math.max(0, vek - vek2)
-  $("#" + subtest + " .oneskorenie").css('color', (oneskorenie > 5) ? 'red' : 'black')
-  $("#" + subtest + " .oneskorenie").text(oneskorenie)
-
+  const oneskorenieElement = document.querySelector(`#subtestRow${subtest} .oneskorenie`)
+  oneskorenieElement.style.color = (oneskorenie > 5) ? 'red' : 'black'
+  oneskorenieElement.textContent = oneskorenie
 }
 
-$('input.skore').on('change', function() {
-  evaluate($(this).attr('subtest'), $('input[name=pohlavie]').val(), parseInt($('#vek').val()), parseFloat($(this).val()))
+
+const skoreInputs = document.querySelectorAll('input.skore')
+skoreInputs.forEach(input => {
+  input.addEventListener('change', function() {
+    const subtest = input.getAttribute('subtest')
+    const pohlavie = document.querySelector('input[name=pohlavie]').value
+    const vek = parseInt(document.querySelector('#vek').value)
+    const skore = parseFloat(input.value)
+    evaluate(subtest, pohlavie, vek, skore)
+  })
 })
 
-$(function() {
-  $('tbody tr').each(function(i, el) {
-    $(el).find('.skore').attr('placeholder', 'Skore ' + $(el).attr('id'))
-    $(el).find('.skore').attr('subtest', $(el).attr('id'))
+document.addEventListener('DOMContentLoaded', function() {
+  const tableRows = document.querySelectorAll('tbody tr')
+  tableRows.forEach(row => {
+    const subtest = row.getAttribute('id').slice(-1)
+    const skoreInput = row.querySelector('.skore')
+    skoreInput.setAttribute('placeholder', `Skore ${subtest}`)
+    skoreInput.setAttribute('subtest', subtest)
   })
 })
